@@ -74,6 +74,7 @@ function MusicPlayer() {
 
   const currentTrack = playlist[currentIndex];
 
+  // Logic 1: Đồng bộ trạng thái chơi nhạc (Giữ nguyên tính năng cũ)
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -83,6 +84,37 @@ function MusicPlayer() {
       }
     }
   }, [currentIndex, isPlaying]);
+
+  // Logic 2: Tự động phát nhạc khi phát hiện tương tác đầu tiên của người dùng trên trang web
+  useEffect(() => {
+    const tuDongPhatNhac = () => {
+      if (audioRef.current && !isPlaying) {
+        audioRef.current.play()
+          .then(() => {
+            setIsPlaying(true);
+            goBoSuKien(); // Phát thành công thì gỡ bỏ lắng nghe sự kiện ngay
+          })
+          .catch((loi) => {
+            console.log("Trình duyệt chặn autoplay, chờ tương tác rõ ràng hơn:", loi);
+          });
+      }
+    };
+
+    const goBoSuKien = () => {
+      window.removeEventListener('click', tuDongPhatNhac);
+      window.removeEventListener('scroll', tuDongPhatNhac);
+      window.removeEventListener('touchstart', tuDongPhatNhac);
+      window.removeEventListener('keydown', tuDongPhatNhac);
+    };
+
+    // Lắng nghe mọi hành vi tương tác phổ biến của người dùng trên toàn trang
+    window.addEventListener('click', tuDongPhatNhac);
+    window.addEventListener('scroll', tuDongPhatNhac);
+    window.addEventListener('touchstart', tuDongPhatNhac);
+    window.addEventListener('keydown', tuDongPhatNhac);
+
+    return () => goBoSuKien(); // Dọn dẹp bộ nhớ khi component bị unmount
+  }, [isPlaying]);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);

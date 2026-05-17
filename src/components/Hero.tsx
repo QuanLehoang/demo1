@@ -44,7 +44,7 @@ const Hero: React.FC = () => {
         >
           KỶ NIỆM 136 NĂM <br />
           <span className="text-xl md:text-3xl lg:text-4xl font-rounded text-vn-gold text-gold-gradient animate-gold-shimmer block mt-2">
-            NGÀY SINH CHỦ TỊCH HỒ CHÍ MINH (19/5/1890 – 19/5/2026).
+            CHỦ TỊCH HỒ CHÍ MINH (19/5/1890 – 19/5/2026)
           </span>
         </motion.h2>
 
